@@ -108,3 +108,60 @@ if(teacherTableBody) {
 window.deleteTeacher = (id) => {
     if(confirm("Remove teacher?")) database.ref('teachers/' + id).remove();
 }
+
+
+
+
+// --- Attendance Logic ---
+const attendanceTableBody = document.getElementById('attendanceTableBody');
+const attendanceForm = document.getElementById('attendanceForm');
+const currentDateHeader = document.getElementById('currentDate');
+
+// Ajker tarikh dekhano
+if(currentDateHeader) {
+    currentDateHeader.innerText = "Date: " + new Date().toLocaleDateString();
+}
+
+// Student List load kora Attendance-er jonno
+if(attendanceTableBody) {
+    database.ref('students/').on('value', (snapshot) => {
+        attendanceTableBody.innerHTML = "";
+        snapshot.forEach((childSnapshot) => {
+            const student = childSnapshot.val();
+            const row = `
+                <tr>
+                    <td>${student.roll}</td>
+                    <td>${student.name}</td>
+                    <td>
+                        <input type="radio" name="status_${childSnapshot.key}" value="Present" checked> P
+                        <input type="radio" name="status_${childSnapshot.key}" value="Absent"> A
+                    </td>
+                </tr>
+            `;
+            attendanceTableBody.innerHTML += row;
+        });
+    });
+}
+
+// Attendance Submit kora
+if(attendanceForm) {
+    attendanceForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        
+        database.ref('students/').once('value', (snapshot) => {
+            let attendanceData = {};
+            snapshot.forEach((childSnapshot) => {
+                const status = document.querySelector(`input[name="status_${childSnapshot.key}"]:checked`).value;
+                attendanceData[childSnapshot.key] = {
+                    name: childSnapshot.val().name,
+                    status: status
+                };
+            });
+
+            database.ref('attendance/' + date).set(attendanceData).then(() => {
+                alert("Attendance Submitted for " + date);
+            });
+        });
+    });
+}
