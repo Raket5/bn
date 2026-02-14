@@ -49,3 +49,13 @@ window.deleteStudent = (id) => {
         database.ref('students/' + id).remove();
     }
 }
+
+
+// Dashboard-er Total Student count update
+const totalStudentsCount = document.getElementById('totalStudentsCount');
+if (totalStudentsCount) {
+    database.ref('students/').on('value', (snapshot) => {
+        // snapshot.numChildren() diye total koijon student ache ta pawa jay
+        totalStudentsCount.innerText = snapshot.numChildren();
+    });
+}
