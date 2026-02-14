@@ -59,3 +59,44 @@ if (totalStudentsCount) {
         totalStudentsCount.innerText = snapshot.numChildren();
     });
 }
+
+
+
+
+// --- Teacher Management Logic ---
+const teacherForm = document.getElementById('teacherForm');
+const teacherTableBody = document.getElementById('teacherTableBody');
+
+if(teacherForm) {
+    teacherForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        database.ref('teachers/').push({
+            name: document.getElementById('tName').value,
+            designation: document.getElementById('tDesignation').value,
+            subject: document.getElementById('tSubject').value
+        }).then(() => {
+            alert("Teacher Added!");
+            teacherForm.reset();
+        });
+    });
+}
+
+if(teacherTableBody) {
+    database.ref('teachers/').on('value', (snapshot) => {
+        teacherTableBody.innerHTML = "";
+        snapshot.forEach((childSnapshot) => {
+            const t = childSnapshot.val();
+            teacherTableBody.innerHTML += `
+                <tr>
+                    <td>${t.name}</td>
+                    <td>${t.designation}</td>
+                    <td>${t.subject}</td>
+                    <td><button onclick="deleteTeacher('${childSnapshot.key}')" style="color:red;">Delete</button></td>
+                </tr>`;
+        });
+    });
+}
+
+window.deleteTeacher = (id) => {
+    if(confirm("Remove teacher?")) database.ref('teachers/' + id).remove();
+}
