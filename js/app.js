@@ -62,6 +62,14 @@ if (totalStudentsCount) {
 
 
 
+// Dashboard Teachers Count
+const totalTeachersDisplay = document.getElementById('totalTeachersCount'); // index.html-e ID-ta thik thakte hobe
+if (totalTeachersDisplay) {
+    database.ref('teachers/').on('value', (snapshot) => {
+        totalTeachersDisplay.innerText = snapshot.numChildren();
+    });
+}
+
 
 // --- Teacher Management Logic ---
 const teacherForm = document.getElementById('teacherForm');
