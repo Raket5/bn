@@ -1,1 +1,55 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BnSchool</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h2>BnSchool</h2>
+            <ul>
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                
+                <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                
+                <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                <li><a href="#"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <h1>Admin Dashboard</h1>
+            </header>
+            
+            <div class="stats-cards">
+                <div class="card">
+                    <h3>Total Students</h3>
+                    <span id="totalStudentsCount">0</span>
+                </div>
+                <div class="card">
+                    <h3>Total Teachers</h3>
+                    <span>15</span>
+                </div>
+                <div class="card">
+                    <h3>Today's Present</h3>
+                    <span>92%</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
