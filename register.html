@@ -8,27 +8,39 @@
     <style>
         .reg-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f4f7f6; padding: 20px; }
         .reg-box { background: white; padding: 30px; border-radius: 10px; width: 100%; max-width: 450px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .reg-box input, .reg-box select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        .btn-reg { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        .whatsapp-info { font-size: 13px; color: #128C7E; background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #128C7E; }
+        .reg-box h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
+        .reg-box input, .reg-box select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .btn-reg { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        .info-msg { font-size: 13px; color: #128C7E; background: #e8f5e9; padding: 10px; border-radius: 5px; margin-bottom: 15px; border-left: 4px solid #27ae60; }
     </style>
 </head>
 <body>
     <div class="reg-container">
         <div class="reg-box">
-            <h2 style="text-align: center;"><i class="fas fa-user-plus"></i> মেম্বার রেজিস্ট্রেশন</h2>
-            <div class="whatsapp-info">
-                <i class="fab fa-whatsapp"></i> আপনার সঠিক হোয়াটসঅ্যাপ নম্বর দিন। এপ্রুভালের পর এই নম্বরে আপনাকে পাসওয়ার্ড জানানো হবে।
+            <h2><i class="fas fa-user-plus"></i> মেম্বার রেজিস্ট্রেশন</h2>
+            
+            <div class="info-msg">
+                <i class="fas fa-info-circle"></i> আপনার তথ্য প্রদান করুন। এডমিন এপ্রুভ করার সময় আপনার পাসওয়ার্ড সেট করে দেবেন এবং আপনাকে হোয়াটসঅ্যাপে জানানো হবে।
             </div>
+
             <form id="regForm">
-                <input type="text" id="fullName" placeholder="সম্পূর্ণ নাম" required>
+                <label>সম্পূর্ণ নাম:</label>
+                <input type="text" id="fullName" placeholder="যেমন: রহিম আহমেদ" required>
+                
+                <label>পদবি নির্বাচন করুন:</label>
                 <select id="regRole" required>
-                    <option value="" disabled selected>আপনার পদবি নির্বাচন করুন</option>
+                    <option value="" disabled selected>নির্বাচন করুন</option>
                     <option value="student">Student (ছাত্র)</option>
                     <option value="teacher">Teacher (শিক্ষক)</option>
                     <option value="admin2">Coordinator / Head Teacher</option>
                 </select>
-                <input type="text" id="whatsappNumber" placeholder="WhatsApp নম্বর (e.g. 017xxxxxxxx)" required>
+
+                <label>ইমেইল অ্যাড্রেস:</label>
+                <input type="email" id="email" placeholder="example@mail.com" required>
+
+                <label>হোয়াটসঅ্যাপ নম্বর:</label>
+                <input type="text" id="whatsappNumber" placeholder="017XXXXXXXX" required>
+
                 <button type="submit" class="btn-reg">আবেদনের রিকোয়েস্ট পাঠান</button>
             </form>
         </div>
@@ -40,14 +52,24 @@
     <script>
         document.getElementById('regForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = document.getElementById('fullName').value;
-            const role = document.getElementById('regRole').value;
-            const whatsapp = document.getElementById('whatsappNumber').value;
+            const userData = {
+                name: document.getElementById('fullName').value,
+                role: document.getElementById('regRole').value,
+                email: document.getElementById('email').value,
+                whatsapp: document.getElementById('whatsappNumber').value,
+                status: 'pending',
+                requestDate: new Date().toISOString()
+            };
 
-            // Firebase logic to push data to "pending_requests"
-            // firebase.database().ref('pending_requests').push({ name, role, whatsapp, status: 'pending' });
-            
-            alert("আপনার আবেদনটি জমা হয়েছে। এডমিন এপ্রুভ করলে আপনার হোয়াটসঅ্যাপ নম্বরে যোগাযোগ করা হবে।");
+            // Firebase-e data pathano
+            firebase.database().ref('requests/').push(userData)
+            .then(() => {
+                alert("আবেদন সফল হয়েছে! এডমিন আপনার ইমেইল এবং হোয়াটসঅ্যাপ যাচাই করে এপ্রুভাল দেবেন।");
+                window.location.href = 'index.html'; // Ba onno kothao redirect
+            })
+            .catch((error) => {
+                alert("ত্রুটি: " + error.message);
+            });
         });
     </script>
 </body>
