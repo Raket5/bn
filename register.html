@@ -1,16 +1,54 @@
-<form id="regForm">
-    <input type="text" id="fullName" placeholder="সম্পূর্ণ নাম" required>
-    <select id="regRole" required>
-        <option value="" disabled selected>আপনার পদবি</option>
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-        <option value="admin2">2nd Level Admin</option>
-    </select>
-    <input type="text" id="contact" placeholder="ইমেইল বা ফোন নম্বর" required>
-    
-    <div class="info-msg">
-        <i class="fas fa-lock"></i> পাসওয়ার্ড এডমিন সেট করে দিবে এবং এপ্রুভালের পর আপনি তা জানতে পারবেন।
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Request - BnSchool</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .reg-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f4f7f6; padding: 20px; }
+        .reg-box { background: white; padding: 30px; border-radius: 10px; width: 100%; max-width: 450px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .reg-box input, .reg-box select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .btn-reg { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .whatsapp-info { font-size: 13px; color: #128C7E; background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #128C7E; }
+    </style>
+</head>
+<body>
+    <div class="reg-container">
+        <div class="reg-box">
+            <h2 style="text-align: center;"><i class="fas fa-user-plus"></i> মেম্বার রেজিস্ট্রেশন</h2>
+            <div class="whatsapp-info">
+                <i class="fab fa-whatsapp"></i> আপনার সঠিক হোয়াটসঅ্যাপ নম্বর দিন। এপ্রুভালের পর এই নম্বরে আপনাকে পাসওয়ার্ড জানানো হবে।
+            </div>
+            <form id="regForm">
+                <input type="text" id="fullName" placeholder="সম্পূর্ণ নাম" required>
+                <select id="regRole" required>
+                    <option value="" disabled selected>আপনার পদবি নির্বাচন করুন</option>
+                    <option value="student">Student (ছাত্র)</option>
+                    <option value="teacher">Teacher (শিক্ষক)</option>
+                    <option value="admin2">Coordinator / Head Teacher</option>
+                </select>
+                <input type="text" id="whatsappNumber" placeholder="WhatsApp নম্বর (e.g. 017xxxxxxxx)" required>
+                <button type="submit" class="btn-reg">আবেদনের রিকোয়েস্ট পাঠান</button>
+            </form>
+        </div>
     </div>
-    
-    <button type="submit" class="btn-reg">আবেদনের রিকোয়েস্ট পাঠান</button>
-</form>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('fullName').value;
+            const role = document.getElementById('regRole').value;
+            const whatsapp = document.getElementById('whatsappNumber').value;
+
+            // Firebase logic to push data to "pending_requests"
+            // firebase.database().ref('pending_requests').push({ name, role, whatsapp, status: 'pending' });
+            
+            alert("আপনার আবেদনটি জমা হয়েছে। এডমিন এপ্রুভ করলে আপনার হোয়াটসঅ্যাপ নম্বরে যোগাযোগ করা হবে।");
+        });
+    </script>
+</body>
+</html>
